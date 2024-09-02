@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>My Portfolio</h1>
+        <nav>
+            <ul>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Projects</a></li>
+                <li><a href="#">???</a></li>
+                <li><a href="#">???</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="about">
+        <h2>About Me</h2>
+        <p>Hello! My name is Philip and i am a Webdeveloper</p>
+    </section>
+
+    <section id="sequence-diagram">
+        <h2>Sequence Diagram - Create New Project</h2>
+        <div class="mermaid">
+            sequenceDiagram
+            participant User
+            participant Browser
+            participant Server
+            User->>Browser: Click "Add New Project"
+            Browser->>Server: Send POST request with project data
+            Server-->>Browser: Return success response
+            Browser-->>User: Display confirmation message
+        </div>
+    </section>
+
+  
+
+    <footer>
+        <p>&copy; 2024 My Portfolio</p>
+    </footer>
+
+    
+    <script type="module" src="script.js"></script>
+</body>
+</html>
