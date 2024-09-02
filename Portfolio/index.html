@@ -11,17 +11,26 @@
         <h1>My Portfolio</h1>
         <nav>
             <ul>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Projects</a></li>
-                <li><a href="#">???</a></li>
-                <li><a href="#">???</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#sequence-diagram">Sequence Diagram</a></li>
             </ul>
         </nav>
     </header>
 
     <section id="about">
         <h2>About Me</h2>
-        <p>Hello! My name is Philip and i am a Webdeveloper</p>
+        <p>Hello! My name is Philip and I am a Web Developer.</p>
+    </section>
+
+    <section id="projects">
+        <h2>Projects</h2>
+        <form id="projectForm">
+            <input type="text" id="projectName" placeholder="Project Name" required>
+            <textarea id="projectDescription" placeholder="Project Description" required></textarea>
+            <button type="submit">Add Project</button>
+        </form>
+        <div id="projectList"></div>
     </section>
 
     <section id="sequence-diagram">
@@ -38,13 +47,10 @@
         </div>
     </section>
 
-  
-
     <footer>
         <p>&copy; 2024 My Portfolio</p>
     </footer>
 
-    
     <script type="module" src="script.js"></script>
 </body>
 </html>
