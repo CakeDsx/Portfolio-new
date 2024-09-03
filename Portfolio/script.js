@@ -14,6 +14,7 @@ async function getJson(){
         const data = await response.json();
         return data 
     } catch(error){console.error("Unable to fetch data:", error)}
+  
 }
 
 export async function handleProjects() {
@@ -39,9 +40,8 @@ export async function handleProjects() {
     }
 
     export async function postjson(event, form){
-
         const formData = new FormData(form);
-        const postURL = "http://localhost:3999/postJson";
+        const postURL = "http://localhost:3999/postjson";
         const title = formData.get("title");
         const date = formData.get("date");
         const description = formData.get("description");
@@ -66,3 +66,4 @@ export async function handleProjects() {
     console.log("Replacing Window");
     window.location.replace("/");    
     }
+
