@@ -23,15 +23,7 @@
         <p>Hello! My name is Philip and I am a Web Developer.</p>
     </section>
 
-    <section id="projects">
-        <h2>Projects</h2>
-        <form id="projectForm">
-            <input type="text" id="projectName" placeholder="Project Name" required>
-            <textarea id="projectDescription" placeholder="Project Description" required></textarea>
-            <button type="submit">Add Project</button>
-        </form>
-        <div id="projectList"></div>
-    </section>
+
 
     <section id="sequence-diagram">
         <h2>Sequence Diagram - Create New Project</h2>
@@ -45,6 +37,30 @@
             Server-->>Browser: Return success response
             Browser-->>User: Display confirmation message
         </div>
+    </section>
+    <section>
+        <h2>Add projects</h2>
+        <script type="module">
+            import{postjson} from "./script.js"
+            window.postjson = postjson;
+         </script>
+         <form onsubmit="postjson(event, this)">
+            <input type="text" placeholder="Project Name"></input>
+            <input type="text" placeholder="Project desctiption"></input>
+            <input type="date"></input>
+            <input type="submit">
+
+         </form>
+       
+    </section>
+    <section>
+        <h2>My projects</h2>
+        <div id="projectsDiv"></div>
+        <script type="module">
+           import{handleProjects} from "./script.js"
+           window.handleProjects = handleProjects;
+           handleProjects()
+        </script>
     </section>
 
     <footer>

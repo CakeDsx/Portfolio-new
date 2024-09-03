@@ -1,35 +1,25 @@
-import { Hono } from 'hono';
-import { serve } from 'hono/serve';
+import { serve } from "@hono/node-server";
+import { Hono } from "hono";
+import { cors } from "hono/cors";
+import { serveStatic } from "@hono/node-server/serve-static";
+import { readFile } from "node:fs/promises";
 
 const app = new Hono();
 
-interface Project {
-  id: number;
-  name: string;
-  description: string;
-  created_at: string;
-}
+app.use("/*", cors());
 
-let projects: Project[] = []; // In-memory list to store projects
+app.use("/statics/*", serveStatic({ root: "./" }));
 
-// Route to get all projects
-app.get('/projects', (c) => {
-  return c.json(projects);
+app.get("/getjson", async (c) => {
+  const data = await readFile("./projects.json", "utf-8");
+  return c.json(JSON.parse(data));
 });
 
-// Route to add a new project
-app.post('/projects', async (c) => {
-  const body = await c.req.json<Project>();
-  const newProject: Project = {
-    id: projects.length + 1,
-    ...body,
-    created_at: new Date().toISOString(),
-  };
-  projects.push(newProject);
-  return c.json(newProject, 201);
+const port = 3999;
+
+console.log("Server is running YEAH");
+
+serve({
+  fetch: app.fetch,
+  port,
 });
-
-// Start the server on port 3000
-serve(app, { port: 3000 });
-
-console.log('Server running on http://localhost:3000');

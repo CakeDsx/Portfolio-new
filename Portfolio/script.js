@@ -1,77 +1,68 @@
 import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
 
+
 mermaid.initialize({ startOnLoad: true });
 
-// Fetch all projects from the server and display them
-async function fetchProjects() {
+
+async function getJson(){
+    const getURL = "http://localhost:3999/getjson"
     try {
-        const response = await fetch('http://localhost:3000/projects');
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
+       const response = await fetch(getURL);
+        if(!response.ok){
+            throw new Error("You Ducked Up")
         }
-        const projects = await response.json();
-        displayProjects(projects);
-        return projects;
-    } catch (error) {
-        console.error('Failed to fetch projects:', error);
+        const data = await response.json();
+        return data 
+    } catch(error){console.error("Unable to fetch data:", error)}
+}
+
+export async function handleProjects() {
+        const projects = await getJson();
+        // Access a specific project by its key
+        const keys = Object.keys(projects);
+        let a, li, para, linkText, element;
+        element = (document.getElementById("projectsDiv"));
+        for (let i = 0; i < keys.length; i++) {
+        a = document.createElement("a");
+        li = document.createElement("li");
+        para = document.createElement("para");
+        linkText = document.createTextNode(keys[i]);
+        
+        a.appendChild(linkText);
+        a.title = (`${keys[i]}`);
+        a.href = `/${keys[i]}`;
+        li.appendChild(a)
+
+        element.appendChild(li);
+        element.appendChild(para);
     }
-}
-
-// Display projects on the page
-function displayProjects(projects) {
-    const projectList = document.getElementById('projectList');
-    projectList.innerHTML = ''; // Clear previous projects
-    projects.forEach(project => {
-        const projectElement = document.createElement('div');
-        projectElement.classList.add('project');
-        projectElement.innerHTML = `
-            <h3>${project.name}</h3>
-            <p>${project.description}</p>
-            <small>Created at: ${new Date(project.created_at).toLocaleString()}</small>
-        `;
-        projectList.appendChild(projectElement);
-    });
-}
-
-// Add a new project to the server
-async function createProject(newProject) {
-    try {
-        const response = await fetch('http://localhost:3000/projects', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(newProject)
-        });
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        const project = await response.json();
-        fetchProjects(); // Refresh the list of projects
-        console.log('Created Project:', project);
-    } catch (error) {
-        console.error('Failed to create project:', error);
     }
-}
 
-// Handle the project form submission
-document.getElementById('projectForm').addEventListener('submit', function(event) {
-    event.preventDefault();
+    export async function postjson(event, form){
 
-    const name = document.getElementById('projectName').value;
-    const description = document.getElementById('projectDescription').value;
-
-    const newProject = {
-        name: name,
-        description: description,
-    };
-
-    createProject(newProject);
-
-    // Clear the form fields
-    document.getElementById('projectName').value = '';
-    document.getElementById('projectDescription').value = '';
-});
-
-// Fetch and display the projects when the page loads
-fetchProjects();
+        const formData = new FormData(form);
+        const postURL = "http://localhost:3999/postJson";
+        const title = formData.get("title");
+        const date = formData.get("date");
+        const description = formData.get("description");
+        const [year, month, day] = date.split("-");
+        await fetch(postURL), {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            [title]: {
+                "id": Date.now(),
+                "date": {
+                    "day": day,
+                    "month": month,
+                    "year": year
+                },
+                "description": description
+            }
+        })
+        };
+    console.log("Replacing Window");
+    window.location.replace("/");    
+    }
