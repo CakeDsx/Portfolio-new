@@ -39,31 +39,43 @@ export async function handleProjects() {
     }
     }
 
-    export async function postjson(event, form){
+    export async function postjson(event, form) {
         const formData = new FormData(form);
         const postURL = "http://localhost:3999/postjson";
         const title = formData.get("title");
         const date = formData.get("date");
         const description = formData.get("description");
         const [year, month, day] = date.split("-");
-        await fetch(postURL), {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            [title]: {
-                "id": Date.now(),
-                "date": {
-                    "day": day,
-                    "month": month,
-                    "year": year
+    
+        try {
+            const response = await fetch(postURL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
                 },
-                "description": description
+                body: JSON.stringify({
+                    [title]: {
+                        "id": Date.now(),
+                        "date": {
+                            "day": day,
+                            "month": month,
+                            "year": year
+                        },
+                        "description": description
+                    }
+                })
+            });
+    
+            if (!response.ok) {
+                throw new Error("Failed to post data");
             }
-        })
-        };
-    console.log("Replacing Window");
-    window.location.replace("/");    
+    
+            console.log("Replacing Window");
+            window.location.replace("/"); 
+        } catch (error) {
+            console.error("Error posting data:", error);
+        }
     }
+    
+   
 
